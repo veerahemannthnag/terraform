@@ -1,24 +1,43 @@
-terraform {
-  # This module is now only being tested with Terraform 0.13.x. However, to make upgrading easier, we are setting
-  # 0.12.26 as the minimum version, as that version added support for required_providers with source URLs, making it
-  # forwards compatible with 0.13.x code.
-  required_version = ">= 0.12.24"
-}
-/*
+provider "google" {
+  project     = "veerahemannthnag"
+  region      = "us-central1"
+  }
+provider "google-beta" {
+  project     = "veerahemannthnag"
+  region      = "us-central1"
+  }
+
+
 output "hello_world" {
   value = "Hello, World!"
 }
 
-
+/*
 resource "random_id" "server" {
   byte_length = 8
 }
+*/
+module "sql" {
+  source = "../modules/cloudsql"
+  cloudsql_user = var.cloudsql_user
+  cloudsql_password = var.cloudsql_password
+}
 
 
+variable cloudsql_user {
+  type        = string
+  sensitive   = true
+}
+variable cloudsql_password {
+  type        = string
+  sensitive   = true
+}
+
+/*
 output "radom_string" {
   value = random_id.server.id
 }
-*/
+/*
 module "iam_binding" {
     source  = "../modules/iam_binding"
     iam_roles = [
@@ -34,3 +53,4 @@ module "iam_binding" {
         },
     ]
 }
+*/
